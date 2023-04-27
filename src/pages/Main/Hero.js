@@ -1,4 +1,5 @@
 import React from "react";
+import Slider from './Slider';
 
 import interior from '../../images/cafe interior.jpg'
 
@@ -6,6 +7,8 @@ import interior from '../../images/cafe interior.jpg'
 
 export default function Hero(){
     return(
-        <img src={interior} className="interior-pic" alt="Henry's Cafe Interior"  />
+        <div style={{backgroundImage: `url('${interior}')`, height: '100vh'}}>
+            <Slider/>
+        </div>
     )
 }

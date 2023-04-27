@@ -1,104 +1,49 @@
-let slides = [
-  {
-    background: "https://picsum.photos/800/500?image=563",
-    text: "Road"
-  },
-  {
-    background: "https://unsplash.it/800/500?image=580",
-    text: "America"
-  },
-  {
-    background: "https://unsplash.it/800/500?image=824",
-    text: "Pieapple"
-  }
-];
+import React from 'react';
+import Carousel from 'react-material-ui-carousel'
+import { Paper, Card, CardMedia, CardContent, Typography } from '@mui/material'
+import road from '../../images/road.jpg'
+import america from '../../images/america.jpg'
+import pineapple from '../../images/pineapple.jpg'
 
-class Slide extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    let slideStyle = { backgroundImage: `url( ${this.props.background})` };
+function Slider(props)
+{
+  const slides = [
+    {
+      background: road,
+      text: "Road"
+    },
+    {
+      background: america,
+      text: "America"
+    },
+    {
+      background: pineapple,
+      text: "Pineapple"
+    }
+  ];
+
     return (
-        <div
-          className="slider__slide"
-          data-active={this.props.active}
-          style={slideStyle}
-        >
-          <div className="slider__slide__text">{this.props.text}</div>
-        </div>
-    );
-  }
+        <Carousel height='100px'>
+            {
+                slides.map( (slide, i) => <Slide key={i} item={slide} /> )
+            }
+        </Carousel>
+    )
 }
 
-class Slider extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { 
-      activeSlide: 0,
-      interval: 3,
-      autoplay: true
-    };
+function Slide(props)
+{
+  
+const styles = {
+  paperContainer: {
+      backgroundImage: `url('${props.background}')`
   }
-  
-  componentDidMount() {
-		this.timerId = setInterval(() => {
-      console.log(this.state.autoplay);
-      if ( this.state.autoplay ) {
-        this.nextSlide();
-      }
-    },this.state.interval * 1000);
-	}
-  
-  componentWillUnmount() {
-		clearInterval( this.timerId );
-	}
-  
-  pause() {
-    this.setState({ autoplay: false });
-  }
-  
-  resume() {
-    this.setState({ autoplay: true });
-  }
-
-  prevSlide() {
-    let slide = this.state.activeSlide - 1 < 0
-      ? slides.length - 1
-      : this.state.activeSlide - 1;
-    this.setState({
-      activeSlide: slide
-    });
-  }
-  
-  nextSlide() {
-    let slide = this.state.activeSlide + 1 < slides.length
-      ? this.state.activeSlide + 1
-      : 0;
-    this.setState({
-      activeSlide: slide
-    });
-  }
-  
-  render() {
-    var slides = this.props.slides;
+};
     return (
-      <div onMouseEnter={this.pause.bind(this)} onMouseLeave={this.resume.bind(this)}>
-          {slides.map((slide, index) => {
-            return (
-              <Slide
-                background={slide.background}
-                text={slide.text}
-                active={index === this.state.activeSlide}
-              />
-            );
-          })}
-        <div className="rightArrow" onClick={this.nextSlide.bind(this)}><i className="fa fa-4x fa-arrow-circle-right"></i></div>
-        <div className="leftArrow" onClick={this.prevSlide.bind(this)}> <i className="fa fa-4x fa-arrow-circle-left"></i></div>
-      </div>
-    );
-  }
+        <Paper style={styles.paperContainer}>
+            <h2>{props.item.text}</h2>
+        </Paper>
+    )
 }
 
-ReactDOM.render(<Slider slides={slides} />, document.getElementById("slide"));
+export default Slider
